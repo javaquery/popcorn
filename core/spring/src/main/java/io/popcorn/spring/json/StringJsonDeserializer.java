@@ -13,7 +13,7 @@ import java.io.IOException;
  * @since 1.0.0
  */
 @JsonComponent
-public class JsonDeserializerImpl extends JsonDeserializer<String> {
+public class StringJsonDeserializer extends JsonDeserializer<String> {
 
     @Override
     public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
