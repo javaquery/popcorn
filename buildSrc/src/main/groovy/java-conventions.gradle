@@ -1,8 +1,6 @@
 plugins{
     id 'java-library'
     id 'com.diffplug.spotless'
-    id 'maven-publish'
-    id 'signing'
 }
 
 spotless {
