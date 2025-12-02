@@ -1,0 +1,31 @@
+plugins{
+    id 'java-library'
+    id 'com.diffplug.spotless'
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        palantirJavaFormat()
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("${javaVersion}")
+    targetCompatibility = JavaVersion.toVersion("${javaVersion}")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterEngineVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterEngineVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+rootProject.clean.dependsOn tasks.matching { it.name == "clean" }

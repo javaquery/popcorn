@@ -1,24 +1,10 @@
 plugins {
-    id 'java'
-}
-
-group = 'io.popcorn'
-version = 'unspecified'
-
-repositories {
-    mavenCentral()
+    id 'java-conventions'
+    id 'spring-conventions'
 }
 
 dependencies {
-    compileOnly platform("org.springframework.boot:spring-boot-dependencies:3.3.2")
-
-    // Now these do NOT need a version
-    compileOnly "org.springframework.boot:spring-boot-autoconfigure"
     compileOnly "software.amazon.awssdk:auth:2.39.5"
 
     implementation project(':core:util')
-}
-
-test {
-    useJUnitPlatform()
 }

@@ -1,13 +1,8 @@
-plugins {
-    id "java-library"
+plugins{
+    id 'java-conventions'
 }
 
 description = "Utility classes for Java projects"
-version = '1.0.0'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.16'
@@ -16,9 +11,4 @@ dependencies {
 
     testImplementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     testImplementation 'ch.qos.logback:logback-classic:1.3.15'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
-}
-
-test {
-    useJUnitPlatform()
 }
