@@ -1,0 +1,109 @@
+plugins {
+    id 'maven-publish'
+    id 'signing'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = project.name
+
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+
+            pom {
+                name = project.name
+                description = project.description ?: "${project.name} - Part of Popcorn library"
+                url = 'https://github.com/javaquery/popcorn'
+                inceptionYear = '2024'
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/javaquery/popcorn/blob/main/LICENSE'
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'javaquery'
+                        name = 'Vicky Thakor'
+                        email = 'vicky.thakor@javaquery.com'
+                        timezone = '+05:30'
+                        organization = 'JavaQuery'
+                        organizationUrl = 'https://javaquery.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/javaquery/popcorn.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:javaquery/popcorn.git'
+                    url = 'https://github.com/javaquery/popcorn'
+                }
+
+                issueManagement {
+                    system = 'GitHub Issues'
+                    url = 'https://github.com/javaquery/popcorn/issues'
+                }
+
+                // Mark compileOnly dependencies as 'provided'
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    configurations.compileOnly.allDependencies.each { dep ->
+                        if (dep.group && dep.name) {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', dep.group)
+                            dependencyNode.appendNode('artifactId', dep.name)
+                            if (dep.version) {
+                                dependencyNode.appendNode('version', dep.version)
+                            }
+                            dependencyNode.appendNode('scope', 'provided')
+                            dependencyNode.appendNode('optional', 'true')
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'MavenCentral'
+            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+            credentials {
+                username = findProperty('ossrhUsername') ?: System.getenv('OSSRH_USERNAME')
+                password = findProperty('ossrhPassword') ?: System.getenv('OSSRH_PASSWORD')
+            }
+        }
+    }
+}
+
+signing {
+    required { gradle.taskGraph.hasTask('publish') && !version.endsWith('SNAPSHOT') }
+
+    def signingKey = findProperty('signingKey') ?: System.getenv('SIGNING_KEY')
+    def signingPassword = findProperty('signingPassword') ?: System.getenv('SIGNING_PASSWORD')
+
+    if (signingKey && signingPassword) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
+
+    sign publishing.publications.mavenJava
+}

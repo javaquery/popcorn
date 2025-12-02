@@ -1,6 +1,7 @@
 plugins{
     id 'java-conventions'
     id 'spring-conventions'
+    id 'publishing-conventions'
 }
 description = "Utility classes for Spring Boot Projects"
 
