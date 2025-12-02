@@ -3,5 +3,5 @@ plugins {
 }
 
 allprojects {
-    group = "io.popcorn"
+    group = "com.javaquery"
 }
