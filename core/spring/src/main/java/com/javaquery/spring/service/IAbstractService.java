@@ -44,6 +44,10 @@ public interface IAbstractService<T, ID> {
         throw new UnsupportedOperationException("FindAll operation is not supported.");
     }
 
+    default List<T> findAll(Specification<T> specification) {
+        throw new UnsupportedOperationException("FindAll operation is not supported.");
+    }
+
     default PageData<T> findAll(Pageable pageable) {
         throw new UnsupportedOperationException("FindAll operation is not supported.");
     }

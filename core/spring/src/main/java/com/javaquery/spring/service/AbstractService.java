@@ -132,6 +132,19 @@ public abstract class AbstractService<T, ID> implements IAbstractService<T, ID> 
     }
 
     /**
+     * Finds all entities matching the given specification.
+     *
+     * @param specification the specification to filter entities
+     * @return the found entities
+     */
+    public List<T> findAll(Specification<T> specification) {
+        if (specificationExecutor == null) {
+            throw new UnsupportedOperationException("Repository does not support Specifications.");
+        }
+        return specificationExecutor.findAll(specification);
+    }
+
+    /**
      * Finds all entities with pagination.
      *
      * @param pageable the pagination information
